@@ -9,7 +9,7 @@ return array(
 Fuel::DEVELOPMENT => array(
    'type'         => 'mysql',
    'connection'   => array(
-      'hostname'   => 'vlogtube.lv',
+      'hostname'   => 'vlogtube.com',
       'database'   => 'vlogtube',
       'username'   => 'root',
       'password'   => '',
