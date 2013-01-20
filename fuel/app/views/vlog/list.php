@@ -1,3 +1,11 @@
+<?php if (Auth::has_access("vlog.create")) : ?>
+    <p>
+	<?php
+	echo Html::anchor("/vlog/create/", "Add Vlog", array("class" => "btn btn-primary"))
+	?>
+
+    </p>
+<?php endif?>
 <?php foreach ($vlog_model as $vlog) : ?>
     <h3><?php
     echo Html::anchor("vlog/view/" . $vlog->video_id, $vlog->video_name);

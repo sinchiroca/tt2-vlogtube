@@ -27,7 +27,7 @@ if (isset($title)) {
     </head>
     <body>
 	<header>
-	    <h1><a href="/">&laquo;VlogTube&raquo; : video diary portal.</a></h1>	   
+	    <h1><a href="/">&laquo;VlogTube&raquo;: Video Diary Portal.</a></h1>	   
 	</header>
 	<section id="main">
 	    <div class="row">
@@ -50,20 +50,40 @@ if (isset($title)) {
             <div class="container-fluid">
                 <div class="row-fluid">
                     <div class="span2">
+                        <aside id="auth">	    
+                            <?php
+                            $auth = Auth::instance();
+                            $user_id = $auth->get_user_id();
+                            if ($user_id[1] != 0) :
+                                ?>
+                            <div id="logged-in">
+                                Logged in as <?php echo $auth->get_email(); ?>
+                            </div>
+                            <div id="logout">
+                                    <?php
+                                    echo Html::anchor("account/logout", "Log out");
+                                    ?>
+                            </div>
+                                <?php
+                            else :
+                                echo Html::anchor("account/simpleauth", "Would You like to log in?");
+                                ?>
+                            <?php
+                            endif;
+                            ?>
+                        </aside>
                         <?php
                             if (isset($content)) {
                                 echo $content;
                             };
                         ?>
-                        abcdddd
                     </div>
-                    <div class="span5">
+                    <div class="span5">                        
                         <?php
                             if (isset($page_content)) {
                                 echo $page_content;
                             };
                          ?>
-                        absdfadfasf
                     </div>
                     <div class="span2">
                         //THIS part is devoted for SEARCH

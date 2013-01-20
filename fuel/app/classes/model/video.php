@@ -33,4 +33,16 @@ class Model_Video extends \Orm\Model
 				    'cascade_delete' => false)
 				);
    //SHEIT VARBUT VAJADZEES VEEL ARII TAGUS
+  
+  public static function validate($factory) {
+	$val = Validation::forge($factory);
+	
+	//because we want to check if location is valid
+	//$val->add_callable("Model_Orm_Location");
+
+	$val->add_field('video_name', 'Video Name', 'required|max_length[255]');
+	$val->add_field('video_descr', 'Video Description', 'required|max_length[255]');
+	return $val;
+    }
+
 }

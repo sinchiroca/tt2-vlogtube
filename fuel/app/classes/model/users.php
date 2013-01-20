@@ -10,7 +10,7 @@ class Model_Users extends \Orm\Model
         'data_type' => 'varchar',
 	    'label' => 'Username: '
         ),
-        'user_password' => array(
+      'user_password' => array(
            'data_type' => 'varchar',
            'label' => 'Password: '
         ),

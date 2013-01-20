@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS `users` (
 	`user_id` int(4) NOT NULL AUTO_INCREMENT,
 	`user_name` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
+        `user_password` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
 	`user_role` int(1) NOT NULL,
 	`user_email` varchar(255) NOT NULL,
 	PRIMARY KEY (`user_id`)

@@ -33,7 +33,8 @@ return array(
 		 * );
 		 */
 		'packages'  => array(
-			'orm'
+			'orm',
+                        'auth'
 		),
 
 		/**
@@ -69,9 +70,6 @@ return array(
 		 * add it like 'validation' => 'forms'.
 		 * If you don't want the lang in a group use null as groupname.
 		 */
-		'language'  => array(),
-            'packages' => array(
-                'auth',
-            ),
-	),    
+		'language'  => array()
+	)   
 );
