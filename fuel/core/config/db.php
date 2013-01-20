@@ -30,30 +30,14 @@ return array(
 	/**
 	 * Base PDO config
 	 */
+	
 	'default' => array(
-		'type'        => 'pdo',
+		'type'        => 'mysql',
 		'connection'  => array(
-			'persistent' => false,
-			'compress'   => false,
-		),
-		'identifier'   => '`',
-		'table_prefix' => '',
-		'charset'      => 'utf8',
-		'enable_cache' => true,
-		'profiling'    => false,
-	),
-
-	/**
-	 * Base MySQLi config
-	 *
-
-	'default' => array(
-		'type'        => 'mysqli',
-		'connection'  => array(
-			'hostname'   => '',
-			'username'   => '',
-			'password'   => '',
-			'database'   => '',
+			'hostname'   => 'localhost',
+			'username'   => 'vlog_user',
+			'password'   => 'vlog_password',
+			'database'   => 'vlogtube',
 			'persistent' => false,
 		),
 		'identifier'   => '`',
@@ -62,7 +46,6 @@ return array(
 		'enable_cache' => true,
 		'profiling'    => false,
 	),
-	 */
 
 	/**
 	 * Base Redis config

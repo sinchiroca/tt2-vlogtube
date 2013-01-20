@@ -18,7 +18,6 @@ if (isset($title)) {
 	?>
 
 	<?php echo Asset::css('bootstrap.css'); ?>
-	<?php echo Asset::css('eventual.css'); ?>
 	<?php
 	if (isset($libs_css)) {
 	    //some views may want to add extra stylesheets
@@ -28,7 +27,7 @@ if (isset($title)) {
     </head>
     <body>
 	<header>
-	    <h1><a href="/">&laquo;Eventual&raquo; : an event management system</a></h1>
+	    <h1><a href="/">&laquo;VlogTube&raquo; : video diary portal.</a></h1>
 	    <h3><?php
                 if (isset($page_title)) {
                     echo $page_title;
@@ -36,33 +35,9 @@ if (isset($title)) {
                 if (isset($title)) {
                     echo $title;
                 }
-            ?></h3>
-
-	    <aside id="auth">	    
-		<?php
-		$auth = Auth::instance();
-		$user_id = $auth->get_user_id();
-		if ($user_id[1] != 0) :
-		    ?>
-		<div id="logged-in">
-		    Logged in as <?php echo $auth->get_email(); ?>
-		</div>
-		<div id="logout">
-			<?php
-			echo Html::anchor("account/logout", "Log out");
-			?>
-    		</div>
-		    <?php
-		else :
-		    echo Html::anchor("account/simpleauth", "Not logged in. Would you like to?");
-		    ?>
-		<?php
-		endif;
-		?>
-	    </aside>
+            ?></h3>	   
 	</header>
 	<section id="main">
-
 	    <div class="row">
 		<?php if (Session::get_flash('success')): ?>
     		<div class="alert-message success">
@@ -83,11 +58,7 @@ if (isset($title)) {
             <div class="container-fluid">
                 <div class="row-fluid">
                     <div class="span5">
-                        <?php
-                            if (isset($content)) {
-                                echo $content;
-                            };
-                        ?>
+                        abcdefgha
                     </div>
                     <div class="span2">
                         <?php

@@ -21,14 +21,12 @@ class Model_Users extends \Orm\Model
 				    'model_to' => 'Model_Video',
 				    'key_to' => 'video_user_id',
 				    'cascade_save' => true,
-				    'cascade_delete' => false)
-				);
-   protected static $_has_many = array(
+				    'cascade_delete' => false),
 			    'comments' => array(
 				    'key_from' => 'user_id',
 				    'model_to' => 'Model_Comments',
 				    'key_to' => 'comment_user_id',
 				    'cascade_save' => true,
 				    'cascade_delete' => false)
-				);
+			);
 }

@@ -16,11 +16,59 @@
  */
 
 return array(
-        'always_load' => array(
-                'packages' => array(
-                    'orm',
-                ),
-        ),
-    'server_gmt_offset'  => 0,
-	'default_timezone'   => 'Europe/Riga',
+        /**************************************************************************/
+        /* Always Load                                                            */
+	/**************************************************************************/
+	'always_load'  => array(
+
+		/**
+		 * These packages are loaded on Fuel's startup.
+		 * You can specify them in the following manner:
+		 *
+		 * array('auth'); // This will assume the packages are in PKGPATH
+		 *
+		 * // Use this format to specify the path to the package explicitly
+		 * array(
+		 *     array('auth'	=> PKGPATH.'auth/')
+		 * );
+		 */
+		'packages'  => array(
+			'orm'
+		),
+
+		/**
+		 * These modules are always loaded on Fuel's startup. You can specify them
+		 * in the following manner:
+		 *
+		 * array('module_name');
+		 *
+		 * A path must be set in module_paths for this to work.
+		 */
+		'modules'  => array(),
+
+		/**
+		 * Classes to autoload & initialize even when not used
+		 */
+		'classes'  => array(),
+
+		/**
+		 * Configs to autoload
+		 *
+		 * Examples: if you want to load 'session' config into a group 'session' you only have to
+		 * add 'session'. If you want to add it to another group (example: 'auth') you have to
+		 * add it like 'session' => 'auth'.
+		 * If you don't want the config in a group use null as groupname.
+		 */
+		'config'  => array(),
+
+		/**
+		 * Language files to autoload
+		 *
+		 * Examples: if you want to load 'validation' lang into a group 'validation' you only have to
+		 * add 'validation'. If you want to add it to another group (example: 'forms') you have to
+		 * add it like 'validation' => 'forms'.
+		 * If you don't want the lang in a group use null as groupname.
+		 */
+		'language'  => array(),
+	),    
 );

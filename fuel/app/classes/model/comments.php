@@ -15,17 +15,14 @@ class Model_Comments extends \Orm\Model
    );
    protected static $_belongs_to =
 	    array(
-        'users' => array(
-	    'key_from' => 'comment_user_id',
-	    'model_to' => 'Model_Users',
-	    'key_to' => 'user_id')
-   );
-   protected static $_belongs_to =
-	    array(
-        'video' => array(
-	    'key_from' => 'comment_video_id',
-	    'model_to' => 'Model_Video',
-	    'key_to' => 'video_id')
-   );
+                'users' => array(
+                    'key_from' => 'comment_user_id',
+                    'model_to' => 'Model_Users',
+                    'key_to' => 'user_id'),
+                'video' => array(
+                    'key_from' => 'comment_video_id',
+                    'model_to' => 'Model_Video',
+                    'key_to' => 'video_id')
+             );
    
 }
