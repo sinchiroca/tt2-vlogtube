@@ -27,15 +27,7 @@ if (isset($title)) {
     </head>
     <body>
 	<header>
-	    <h1><a href="/">&laquo;VlogTube&raquo; : video diary portal.</a></h1>
-	    <h3><?php
-                if (isset($page_title)) {
-                    echo $page_title;
-                }
-                if (isset($title)) {
-                    echo $title;
-                }
-            ?></h3>	   
+	    <h1><a href="/">&laquo;VlogTube&raquo; : video diary portal.</a></h1>	   
 	</header>
 	<section id="main">
 	    <div class="row">
@@ -57,17 +49,23 @@ if (isset($title)) {
 
             <div class="container-fluid">
                 <div class="row-fluid">
-                    <div class="span5">
-                        abcdefgha
-                    </div>
                     <div class="span2">
+                        <?php
+                            if (isset($content)) {
+                                echo $content;
+                            };
+                        ?>
+                        abcdddd
+                    </div>
+                    <div class="span5">
                         <?php
                             if (isset($page_content)) {
                                 echo $page_content;
                             };
                          ?>
+                        absdfadfasf
                     </div>
-                    <div class="span5">
+                    <div class="span2">
                         //THIS part is devoted for SEARCH
                     </div>
                 </div>
