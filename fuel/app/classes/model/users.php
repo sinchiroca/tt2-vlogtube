@@ -7,8 +7,13 @@ class Model_Users extends \Orm\Model
    protected static $_properties = array(
       'user_id',
       'user_name' => array(
-	    'data_type' => 'varchar',
-	    'label' => 'Username: '),
+        'data_type' => 'varchar',
+	    'label' => 'Username: '
+        ),
+        'user_password' => array(
+           'data_type' => 'varchar',
+           'label' => 'Password: '
+        ),
       'user_role',
       'user_email' => array(
 	    'data_type' => 'varchar',

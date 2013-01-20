@@ -248,5 +248,30 @@ class Controller_Vlog extends Controller_Template {
 	    "http://cdn.aloha-editor.org/latest/css/aloha.css"
 	);
     }
+    
+    /**Written by sinchiroca*/
+    public function action_login()
+    {
+        $data = array();
+        if ($_POST)
+        {
+            $auth = Auth::instance();
+            //Check privileges
+            if ($auth->login($_POST['user_name'], $_POST['user_password']))
+            {
+                //Privs OK
+                Response::redirect('vlog/view');
+            }
+            else
+            {
+                //Login failed. Try again
+                $data['user_name'] = $_POST['user_name'];
+                $data['login_error'] = 'Wrong username and/or password. Try once more';
+            }
+        }
+        
+        //Show login form
+        echo View::forge('vlog/login', $data);
+    }
 
 }
