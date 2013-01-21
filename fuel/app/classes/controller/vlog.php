@@ -27,13 +27,6 @@ class Controller_Vlog extends Controller_Template {
         $this->template->page_sidebar = $main_sidebar;
     }
 
-    /**
-     * Creation of new events.
-     * Works on both the first load, which is typically 
-     * a GET request as on later requests, which are POST.
-     * When POST-ing, a validation is run on input data.
-     * Validation rules taken from "Event" model.
-     */
     public function action_create() {
 	if ( ! Auth::has_access('vlog.create') ) {
 	//if ($this->_user_id == 0){

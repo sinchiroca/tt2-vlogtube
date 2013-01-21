@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 	`comment_descr` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
         `comment_user_id` int(4) NOT NULL,
         `comment_video_id` int(4) NOT NULL,
+        `comment_status` int(1) NOT NULL,
 	`comment_post_date` int(11) NOT NULL,
 	PRIMARY KEY (`comment_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_latvian_ci AUTO_INCREMENT=1;

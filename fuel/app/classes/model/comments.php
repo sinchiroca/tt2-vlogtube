@@ -11,6 +11,7 @@ class Model_Comments extends \Orm\Model
 	    'label' => 'Comment Description: '),
       'comment_user_id',
       'comment_video_id',
+      'comment_status',
       'comment_post_date'    
    );
    protected static $_belongs_to =
