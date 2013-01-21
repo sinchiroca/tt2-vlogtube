@@ -1,8 +1,8 @@
 <?php
 
-class Model_Users extends \Orm\Model
+class Model_Orm_Passworduser extends \Orm\Model
 {
-   protected static $_table_name = 'users';
+   protected static $_table_name = 'passwordusers';
    protected static $_primary_key = array('user_id');
    protected static $_properties = array(
       'user_id',
@@ -14,10 +14,8 @@ class Model_Users extends \Orm\Model
            'data_type' => 'varchar',
            'label' => 'Password: '
         ),
-      'user_role',
-      'user_email' => array(
-	    'data_type' => 'varchar',
-	    'label' => 'E-mail: ')
+      'user_role' => array(
+	    'data_type' => 'varchar',)
    );
    
    protected static $_has_many = array(

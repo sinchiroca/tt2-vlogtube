@@ -5,7 +5,7 @@ use \Model_Video;
 class Controller_Vlog extends Controller_Template {
     private $_auth;
     private $_user_id;
-    /*
+    
     public function before() {
 	parent::before();
 	
@@ -19,14 +19,11 @@ class Controller_Vlog extends Controller_Template {
      */
     public function action_index() {
 
-	$vlog_model = Model_Video::find("all");
+	$main_content = View::forge("account/simpleauth");
+        $main_sidebar = View::forge("vlog/sidebar");
 
-	$main_content = View::forge("vlog/list");
-	$main_content->set("vlog_model", $vlog_model);
-
-
-	$this->template->page_title = "List of Vlogs";
 	$this->template->page_content = $main_content;
+        $this->template->page_sidebar = $main_sidebar;
     }
 
     /**
@@ -271,7 +268,7 @@ class Controller_Vlog extends Controller_Template {
         }
         
         //Show login form
-        echo View::forge('vlog/login', $data);
+        echo View::forge('auth/login', $data);
     }
 
 }
