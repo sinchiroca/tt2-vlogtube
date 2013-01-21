@@ -2,6 +2,12 @@
 
 class Controller_Account extends Controller_Template {
     
+    public function before() {
+        parent::before();
+        
+        $auth = Auth::instance();
+        $user_id = $auth->get_user_id();
+    }
     public function action_create() {
         if (Input::method() == "POST") {
             $exist_user = DB::select("id")
@@ -51,8 +57,9 @@ class Controller_Account extends Controller_Template {
     
     public function action_simpleauth() {
         $data = array();
-
+Session::set_flash("error", "User name or password incorrect.");
         // If so, you pressed the submit button. let's go over the steps
+        if (!Input::post()) {Session::set_flash("error", "User name or password incorrect.");}
         if (Input::post()) {
             // first of all, let's get a auth object
             $auth = Auth::instance();
@@ -61,7 +68,7 @@ class Controller_Account extends Controller_Template {
             // you have used the table definition and configuration as mentioned above.
             if ($auth->login()) {
                 // credentials ok, go right in
-                $this->template->page_content = View::forge('vlog/list') and die();
+                Response::redirect("vlog/list");
                 }
             } else {
             // Oops, no soup for you. try to login again. Set some values to
@@ -73,7 +80,8 @@ class Controller_Account extends Controller_Template {
 
 
 // Show the login form
-$this->template->content = View::forge('account/simpleauth', $data);
+    $main_content = View::forge('account/simpleauth', $data);
+    View::forge('account/simpleauth', $data);
     }
 
     public function action_logout() {
