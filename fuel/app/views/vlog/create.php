@@ -27,11 +27,11 @@
 </script>
 
 
-<?php echo Form::open(array("enctype" => "multipart/form-data")); ?>
+<?php echo Form::open('vlog/create'); ?>
 <fieldset>
 
     <div class="clearfix">
-	<?php echo Form::label('Name of the Vlog', 'vidoe_name'); ?>
+	<?php echo Form::label('Name of the Vlog', 'video_name'); ?>
 
 	<div class="input">
 	    <?php
@@ -41,7 +41,7 @@
 	</div>
     </div>
     <div class="clearfix">
-	<?php echo Form::label('YouTube Video URL', 'vidoe_url'); ?>
+	<?php echo Form::label('YouTube Video URL', 'video_url'); ?>
 
 	<div class="input">
 	    <?php
@@ -55,7 +55,7 @@
 
 	<div class="input">
 	    <?php
-	    echo Form::textarea('vidoe_descr', Input::post('video_descr', isset($vlog) ? $vlog->video_descr : ''), array("video_descr" => "video_descr", "rows" => 4, "class" => "span4"));
+	    echo Form::textarea('video_descr', Input::post('video_descr', isset($vlog) ? $vlog->video_descr : ''), array("video_descr" => "video_descr", "rows" => 4, "class" => "span4"));
 	    ?>
 	</div>
     </div>

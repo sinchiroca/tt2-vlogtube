@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `video` (
 	`video_id` int(4) NOT NULL AUTO_INCREMENT,
 	`video_name` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
+        `video_url` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
 	`video_descr` varchar(255) COLLATE utf8_latvian_ci NULL,
         `video_user_id` int(4) NOT NULL,
 	`video_post_date` int(11) NOT NULL,

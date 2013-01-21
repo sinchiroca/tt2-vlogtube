@@ -1,22 +1,13 @@
 <?php if (Auth::has_access("vlog.create")) : ?>
     <p>
 	<?php
-	echo Html::anchor("/vlog/create/", "Add Vlog", array("class" => "btn btn-primary"))
+	echo Html::anchor("/vlog/create/", "Add Vlog", array("class" => "btn btn-primary", "align" => "centre"))
 	?>
 
     </p>
 <?php endif?>
-<?php foreach ($vlog_model as $vlog) : ?>
+<?php foreach ($video_model as $vlog) : ?>
     <h3><?php
-    echo Html::anchor("vlog/view/" . $vlog->video_id, $vlog->video_name);
+    echo Html::anchor("vlog/view/" . $vlog->video_id, $vlog->video_name, array("align" => "center"));
     ?></h3>
-    <ul>
-	<?php foreach ($vlog->comments as $comment) : ?>
-            <li><?php echo $comment->users->username; ?></li>
-	    <li><?php echo $comment->comment_descr; ?></li>
-            <li><?php echo $comment->comment_post_date; ?></li>
-	<?php
-            endforeach;  
-        ?>
-    </ul>
 <?php endforeach; ?>

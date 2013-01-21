@@ -59,7 +59,7 @@ class Controller_Account extends Controller_Template {
         $data = array();
         // If so, you pressed the submit button. let's go over the steps
         
-        if (Input::method()=="POST") {
+        if (Input::method() == "POST") {
             // first of all, let's get a auth object
             $auth = Auth::instance();
 
@@ -67,18 +67,23 @@ class Controller_Account extends Controller_Template {
             // you have used the table definition and configuration as mentioned above.
             if ($auth->login()) {
                 // credentials ok, go right in
-                $this->template->page_content = View::forge('account/create');
-                }
+                $main_sidebar = View::forge("vlog/sidebar");
+                $this->template->page_content = Response::redirect('vlog/list');
+                $this->template->page_sidebar = $main_sidebar;
             } else {
             // Oops, no soup for you. try to login again. Set some values to
         // repopulate the username field and give some error text back to the view
         //$data['username'] = Input::post('username');
+               //$this->template->page_content = View::forge('account/simpleauth');
                 Session::set_flash("error", "User name or password incorrect.");
         //$data['login_error'] = 'Wrong username/password combo. Try again';
             }
-
-            // Show the login form
-            $this->template->content = View::forge('account/simpleauth');
+                
+        }else{   // Show the login form
+            $main_sidebar = View::forge("vlog/sidebar");
+            $this->template->page_content = View::forge('account/simpleauth');
+            $this->template->page_sidebar = $main_sidebar; 
+        }
     }
 
     public function action_logout() {

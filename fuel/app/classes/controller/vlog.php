@@ -1,6 +1,6 @@
 <?php
 
-use \Model_Video;
+use \Model_Orm_Video;
 use \Model_Orm_Passworduser;
 
 class Controller_Vlog extends Controller_Template {
@@ -35,11 +35,11 @@ class Controller_Vlog extends Controller_Template {
      * Validation rules taken from "Event" model.
      */
     public function action_create() {
-	/*if ( ! Auth::has_access('vlog.create') ) {
+	if ( ! Auth::has_access('vlog.create') ) {
 	//if ($this->_user_id == 0){
 	    Session::set_flash("error", "Only registered users may create events");
 	    Response::redirect("/") and die();
-	}*/
+	}
 	$data = array(); //to be passed into the view
 
 	if (Input::method() == "POST") {
@@ -48,19 +48,25 @@ class Controller_Vlog extends Controller_Template {
 		$newVideo = new Model_Orm_Video();
                 $newVideo->video_url = $val->validated("video_url");
 		$newVideo->video_name = $val->validated("video_name");
-		$newVideo->video_descr = $val->validated("description");
-		$uploader = 0;
-		$newVideo->video_user_id = $uploader;
+		$newVideo->video_descr = $val->validated("video_descr");
+                $array = Auth::instance()->get_user_id();
+                $video_user_id = $array[1];
+                $newVideo->video_user_id = $video_user_id;
+                $unixtime = time();
+                $newVideo->video_post_date = $unixtime; 
+                $newVideo->video_report = 0;
+		//$uploader = 0;
+		//$newVideo->video_user_id = $uploader;
 		//first, we save the item without attachments
 		$newVideo->save();
 
-		Session::set_flash("success", "New video uploaded: " . $val->validated("title"));
-		Response::redirect("vlog/view/" . $newVideo->video_id);
+		Session::set_flash("success", "New video uploaded: " . $val->validated("video_name"));
+		Response::redirect("vlog/list/" . $newVideo->video_id);
 	    } else {
 		//validation did not work. 
 		//But still, there may be uploaded files!
 		//$errors = $this->try_get_attachments();
-		//Session::set_flash("error", array_merge($val->error(), $errors));
+		Session::set_flash("error", "ERROR ERROR");
 	    }
 	    //$this->template->title = "Trying to save an event";
 	    //$data["form_key"] = Input::post("form_key");
@@ -70,13 +76,37 @@ class Controller_Vlog extends Controller_Template {
 
 	    //we assign a random value to the form
 	    //$data["form_key"] = md5(mt_rand(1000, 10000));
-	}
+	} else {
 	//$data["locations"] = Model_Orm_Location::get_locations();
 	
 	//$this->add_rich_form_scripts();
 	$this->template->page_content = View::forge("vlog/create", $data);
+        }
     }
-
+    
+    
+    public function action_list() {
+	/*
+        if ( ! Auth::has_access('vlog.create') ) {
+	//if ($this->_user_id == 0){
+	    Session::set_flash("error", "Only registered users may create events");
+	    Response::redirect("/") and die();
+	}
+         * 
+         */
+        $array = Auth::instance()->get_user_id();
+        $video_user_id = $array[1];
+       
+        $video_model = Model_Orm_Video::find('all', array(
+            'where'=> array(array('video_user_id', $video_user_id)),
+                'order_by' => array('video_post_date'=>"desc")));
+        $blabla = View::forge('vlog/list', $video_model);
+        $blabla->set('video_model', $video_model);
+        $this->template->page_title = "List of Vlogs";
+	$this->template->page_content = $blabla;
+    }
+    
+    
     /**
      * Tries to get attachments from uploaded files
      * @param type $event
@@ -205,17 +235,16 @@ class Controller_Vlog extends Controller_Template {
      * @param int $id Database ID of the item
      */
     public function action_view($id = null) {
-	is_null($id) and Response::redirect('Event');
-	$event = Model_Orm_Event::find($id, array("related" =>
-		    array("agendas", "location")));
+	is_null($id) and Response::redirect('vlog/create');
+	$vlog = Model_Orm_Video::find($id);
 
-	is_null($event) and Response::redirect('Event');
+	is_null($vlog) and Response::redirect('vlog/create');
 
 	//$data["event"] = $event;
-	$event_view = View::forge("event/view");
-	$event_view->set("event", $event);
-	$this->template->title = "Viewing an event";
-	$this->template->page_content = $event_view;
+	$vlog_view = View::forge("vlog/view");
+	$vlog_view->set("vlog", $vlog);
+	$this->template->title = "Viewing Vlog";
+	$this->template->page_content = $vlog_view;
     }
 
     public function action_delete($id = null) {
