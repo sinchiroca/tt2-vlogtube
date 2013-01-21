@@ -2,7 +2,7 @@
     <?php echo Asset::css('bootstrap.min.css'); ?>
 
 <?php
-echo Form::open();
+echo Form::open('account/simpleauth');
 echo Form::fieldset_open(null, "Please, login");
 ?>
 

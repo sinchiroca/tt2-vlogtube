@@ -1,6 +1,7 @@
 <?php
 
 use \Model_Video;
+use \Model_Orm_Passworduser;
 
 class Controller_Vlog extends Controller_Template {
     private $_auth;

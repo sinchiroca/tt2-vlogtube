@@ -1,11 +1,16 @@
 CREATE TABLE IF NOT EXISTS `users` (
-	`user_id` int(4) NOT NULL AUTO_INCREMENT,
-	`user_name` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
-        `user_password` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
-	`user_role` int(1) NOT NULL,
-	`user_email` varchar(255) NOT NULL,
-	PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_latvian_ci AUTO_INCREMENT=1;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) COLLATE utf8_latvian_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
+  `group` int(11) NOT NULL DEFAULT '1',
+  `email` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
+  `last_login` varchar(25) COLLATE utf8_latvian_ci NOT NULL,
+  `login_hash` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
+  `profile_fields` text COLLATE utf8_latvian_ci NOT NULL,
+  `created_at` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`,`email`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_latvian_ci AUTO_INCREMENT=3 ;
 
 CREATE TABLE IF NOT EXISTS `video` (
 	`video_id` int(4) NOT NULL AUTO_INCREMENT,
