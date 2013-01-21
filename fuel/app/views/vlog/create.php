@@ -41,11 +41,21 @@
 	</div>
     </div>
     <div class="clearfix">
+	<?php echo Form::label('YouTube Video URL', 'vidoe_url'); ?>
+
+	<div class="input">
+	    <?php
+	    echo Form::input('video_url', Input::post('video_url', isset($vlog) ? $vlog->video_url : ''), array("class" => "span4")
+	    );
+	    ?>
+	</div>
+    </div>
+    <div class="clearfix">
 	<?php echo Form::label('Description of the Vlog', 'description'); ?>
 
 	<div class="input">
 	    <?php
-	    echo Form::textarea('vidoe_descr', Input::post('video_descr', isset($vlog) ? $vlog->video_descr : ''), array("video_id" => "video_descr", "rows" => 4, "class" => "span4"));
+	    echo Form::textarea('vidoe_descr', Input::post('video_descr', isset($vlog) ? $vlog->video_descr : ''), array("video_descr" => "video_descr", "rows" => 4, "class" => "span4"));
 	    ?>
 	</div>
     </div>

@@ -35,48 +35,46 @@ class Controller_Vlog extends Controller_Template {
      * Validation rules taken from "Event" model.
      */
     public function action_create() {
-	if ( ! Auth::has_access('events.create') ) {
+	/*if ( ! Auth::has_access('vlog.create') ) {
 	//if ($this->_user_id == 0){
 	    Session::set_flash("error", "Only registered users may create events");
 	    Response::redirect("/") and die();
-	}
+	}*/
 	$data = array(); //to be passed into the view
 
 	if (Input::method() == "POST") {
-	    $val = Model_Orm_Event::validate('create');
+	    $val = Model_Orm_Video::validate('create');
 	    if ($val->run()) {
-		$newEvent = new Model_Orm_Event();
-		$newEvent->title = $val->validated("title");
-		$newEvent->start = $val->validated("start");
-		$newEvent->description = $val->validated("description");
-		$location = Model_Orm_Location::find(Input::post("location"));
-		$newEvent->location = $location;
+		$newVideo = new Model_Orm_Video();
+                $newVideo->video_url = $val->validated("video_url");
+		$newVideo->video_name = $val->validated("video_name");
+		$newVideo->video_descr = $val->validated("description");
+		$uploader = 0;
+		$newVideo->video_user_id = $uploader;
 		//first, we save the item without attachments
-		$newEvent->save();
+		$newVideo->save();
 
-		$errors = $this->try_get_attachments($newEvent);
-
-		Session::set_flash("success", "New event created: " . $val->validated("title"));
-		Response::redirect("event/view/" . $newEvent->id);
+		Session::set_flash("success", "New video uploaded: " . $val->validated("title"));
+		Response::redirect("vlog/view/" . $newVideo->video_id);
 	    } else {
 		//validation did not work. 
 		//But still, there may be uploaded files!
-		$errors = $this->try_get_attachments();
-		Session::set_flash("error", array_merge($val->error(), $errors));
+		//$errors = $this->try_get_attachments();
+		//Session::set_flash("error", array_merge($val->error(), $errors));
 	    }
-	    $this->template->title = "Trying to save an event";
-	    $data["form_key"] = Input::post("form_key");
-	} else {
+	    //$this->template->title = "Trying to save an event";
+	    //$data["form_key"] = Input::post("form_key");
+	//} else {
 	    //the first GET request
-	    $this->template->title = "Creating an event";
+	    $this->template->title = "Creating new video entry";
 
 	    //we assign a random value to the form
-	    $data["form_key"] = md5(mt_rand(1000, 10000));
+	    //$data["form_key"] = md5(mt_rand(1000, 10000));
 	}
-	$data["locations"] = Model_Orm_Location::get_locations();
+	//$data["locations"] = Model_Orm_Location::get_locations();
 	
-	$this->add_rich_form_scripts();
-	$this->template->page_content = View::forge("event/create", $data);
+	//$this->add_rich_form_scripts();
+	$this->template->page_content = View::forge("vlog/create", $data);
     }
 
     /**
@@ -247,7 +245,7 @@ class Controller_Vlog extends Controller_Template {
 	);
     }
     
-    /**Written by sinchiroca*/
+    /**Written by sinchiroca - obsolete*/
     public function action_login()
     {
         $data = array();

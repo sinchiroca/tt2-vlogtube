@@ -1,11 +1,15 @@
 <?php
 
-class Model_Video extends \Orm\Model
+class Model_Orm_Video extends \Orm\Model
 {
    protected static $_table_name = 'video';
    protected static $_primary_key = array('video_id');
    protected static $_properties = array(
       'video_id',
+      'video_url' => array(
+          'data type' => 'varchar',
+          'label' => 'YouTube URL: '
+      ),
       'video_name' => array(
 	    'data_type' => 'varchar',
 	    'label' => 'Video Name: '),
@@ -41,6 +45,7 @@ class Model_Video extends \Orm\Model
 	//$val->add_callable("Model_Orm_Location");
 
 	$val->add_field('video_name', 'Video Name', 'required|max_length[255]');
+        $val->add_field('video_url', 'YouTube URL', 'required|max_length[255]');
 	$val->add_field('video_descr', 'Video Description', 'required|max_length[255]');
 	return $val;
     }

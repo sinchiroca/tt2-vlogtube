@@ -2,6 +2,12 @@
 
 class Controller_Account extends Controller_Template {
     
+    public function before() {
+        parent::before();
+        
+        $auth = Auth::instance();
+        $user_id = $auth->get_user_id();
+    }
     public function action_create() {
         if (Input::method() == "POST") {
             $exist_user = DB::select("id")
@@ -52,6 +58,7 @@ class Controller_Account extends Controller_Template {
     public function action_simpleauth() {
         $data = array();
         // If so, you pressed the submit button. let's go over the steps
+        if (!Input::post()) {Session::set_flash("error", "User name or password incorrect.");}
         if (Input::post()) {
             // first of all, let's get a auth object
             $auth = Auth::instance();
