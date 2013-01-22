@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
   `group` int(11) NOT NULL DEFAULT '1',
   `email` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
-  `last_login` varchar(25) COLLATE utf8_latvian_ci NOT NULL,
+  `last_login` int(11) NOT NULL,
   `login_hash` varchar(255) COLLATE utf8_latvian_ci NOT NULL,
   `profile_fields` text COLLATE utf8_latvian_ci NOT NULL,
   `created_at` int(11) NOT NULL DEFAULT '0',

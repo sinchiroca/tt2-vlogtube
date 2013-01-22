@@ -2,6 +2,7 @@
 
 use \Model_Orm_Video;
 use \Model_Orm_Passworduser;
+use \Model_Comments;
 
 class Controller_Vlog extends Controller_Template {
     private $_auth;
@@ -13,6 +14,7 @@ class Controller_Vlog extends Controller_Template {
 	$this->_auth = Auth::instance();
 	$userids = $this->_auth->get_user_id();
 	$this->_user_id = $userids[1];
+        $this->template->page_search = View::forge('vlog/search');
 	
     }
     /**
@@ -93,144 +95,23 @@ class Controller_Vlog extends Controller_Template {
         $video_model = Model_Orm_Video::find('all', array(
             'where'=> array(array('video_user_id', $video_user_id)),
                 'order_by' => array('video_post_date'=>"desc")));
-        $blabla = View::forge('vlog/list', $video_model);
+        
+        $blabla = View::forge('vlog/list');
         $blabla->set('video_model', $video_model);
         $this->template->page_title = "List of Vlogs";
 	$this->template->page_content = $blabla;
+        //$this->template->content = View::forge("comments/view");
     }
     
-    
-    /**
-     * Tries to get attachments from uploaded files
-     * @param type $event
-     * @return array list of errors
-     */
-    private function try_get_attachments($event = null) {
-	//first we check if there is probably a file
-	//already stored from previous submissions.
-	$old_file = Session::get("uploaded_file_" . Input::post("form_key"), null);
-	if ($old_file != null and $event != null) {
-	    $event->poster = $old_file;
-	    $event->save();
-	    return array();
-	}
-
-	//no "old files" exist, let's catch the new ones!
-	$config = array(
-	    'path' => APPPATH . 'files',
-	    'randomize' => false,
-	    'auto_rename' => true,
-	    'ext_whitelist' => array('pdf'),
-	);
-
-	// process the uploaded files in $_FILES
-	Upload::process($config);
-
-	// if there are any valid files
-	if (Upload::is_valid()) {
-	    // save them according to the config
-	    Upload::save();
-	    //call a model method to update the database
-	    $newfile = Upload::get_files(0);
-	    if ($event != null) {
-		$event->poster = $newfile["saved_as"];
-		$event->save();
-		return array(); //done, no errors
-	    } else {
-		//there is no event yet (validation problems)
-		//but there are uploaded files.
-		//We store this information in the session
-		//so that the next time user submits the form
-		//with validation errors fixed, we can attach the "old" file
-		Session::set("uploaded_file_" . Input::post("form_key"), $newfile["saved_as"]);
-		return array(); //no errors here!
-	    }
-	} else {
-	    if (count(Upload::get_errors(0)) > 0)
-		//there was some problem with the files
-		return array("The uploaded file could not be saved");
-	    else
-		return array();
-	}
-    }
-    
-    /**
-     * Forced download of the attached file
-     * @param type $id
-     * @return \Response
-     * @throws HttpNotFoundException
-     */
-    public function action_poster($id = null){
-	//if the event request is not valid, return a 404 error
-	if (is_null($id))
-	    throw new HttpNotFoundException;
-	
-	$event = Model_Orm_Event::find($id);
-	if (is_null($event))
-	    throw new HttpNotFoundException;
-	
-	if ($event->poster != null) {
-	    //the files are found in subfolder of APPPATH, named "files"
-	    //DS stands for "Directory Separator"
-	    //Since we know it's a PDF file, we force PDF mime type.
-	    $response = new Response();
-	    $response->set_header('Content-Type', 'application/pdf');
-	    $response->set_header('Content-Disposition', 'attachment; filename="'.$event->poster.'"');
-	    $response->body = file_get_contents(APPPATH."files".DS.$event->poster);
-	    return $response;
-	} else {
-	    //no poster file for the current document!
-	    throw new HttpNotFoundException;
-	}
-    }
-
-    public function action_edit($id = null) {
-	//looks up the even in the database
-	//if anything is not OK - redirects back to the list of events
-
-	is_null($id) and Response::redirect('event');
-	$event = Model_Orm_Event::find($id, array("related" =>
-		    array("location")));
-
-	is_null($event) and Response::redirect('Event');
-
-	//not POST = just read from database
-	if (Input::method() == 'POST') {
-	    $val = Model_Orm_Event::validate("edit");
-	    if ($val->run()) {
-		//validation is OK!
-		$event->title = $val->validated("title");
-		$event->description = $val->validated("description");
-		$event->start = $val->validated("start");
-		$event->location = Model_Orm_Location::find(Input::post("location"));
-		if ($event->save()) {
-		    Session::set_flash("success", "Changes saved successfuly!");
-		} else {
-		    Session::set_flash("error", "Somehow could not save the item.");
-		}
-
-		Response::redirect("event/view/" . $event->id);
-	    } else {
-		//POST data passed, but something wrong with validation
-		Session::set_flash("error", $val->error());
-	    }
-	}
-
-	$data["event"] = $event;
-	$data["locations"] = Model_Orm_Location::get_locations();
-	$this->add_rich_form_scripts();
-	$this->template->title = "Editing the event " . $event->title;
-	$this->template->page_content = View::forge("event/edit", $data);
-    }
-
-    /**
-     * Displays information about the event
-     * @param int $id Database ID of the item
-     */
     public function action_view($id = null) {
 	is_null($id) and Response::redirect('vlog/create');
-	$vlog = Model_Orm_Video::find($id);
-
+	//$vlog = Model_Orm_Video::find($id);
+        
+        $vlog = Model_Orm_Video::find($id, array( 
+            'related'=>array('comments', 'users')
+        ));
+            
+        
 	is_null($vlog) and Response::redirect('vlog/create');
 
 	//$data["event"] = $event;
@@ -241,12 +122,22 @@ class Controller_Vlog extends Controller_Template {
     }
 
     public function action_delete($id = null) {
-	is_null($id) and Response::redirect('event');
-	$event = Model_Orm_Event::find($id);
-	is_null($event) and Response::redirect('Event');
-	$event->delete();
-	Session::set_flash("success", "Deleted the item ".$event->title);
-	Response::redirect('Event');
+        $array = Auth::instance()->get_user_id();
+        $video_user_id = $array[1];
+        $user = Model_Users::find($video_user_id);
+        
+        if ($user->group != 100 ) {
+            Session::set_flash("error", "You are no admin, buddy!!!");
+            return Response::redirect('vlog/list');
+        } else {
+            is_null($id) and Response::redirect('vlog/list');
+            $vlog = Model_Orm_Video::find($id);
+            is_null($vlog) and Response::redirect('vlog/list');
+            $vlog->video_report = 6;
+            $vlog->save();
+            Session::set_flash("success", "Deleted the item ".$vlog->video_name);
+            Response::redirect('vlog/list');
+        }
     }
     /**
      * since we have "rich form", additional scripts
@@ -267,29 +158,31 @@ class Controller_Vlog extends Controller_Template {
 	);
     }
     
-    /**Written by sinchiroca - obsolete*/
-    public function action_login()
+    public function action_search()
     {
         $data = array();
-        if ($_POST)
-        {
-            $auth = Auth::instance();
-            //Check privileges
-            if ($auth->login($_POST['user_name'], $_POST['user_password']))
-            {
-                //Privs OK
-                Response::redirect('vlog/view');
-            }
-            else
-            {
-                //Login failed. Try again
-                $data['user_name'] = $_POST['user_name'];
-                $data['login_error'] = 'Wrong username and/or password. Try once more';
-            }
+        $data = "%".Input::post("search_keyword")."%";
+        $is_err = false;
+        if (!Input::post("search_keyword")) {
+            Session::set_flash("error", __('ACTION_SEARCH_INPUT'));
+            $is_err = true;
         }
         
-        //Show login form
-        echo View::forge('auth/login', $data);
-    }
+        $video_model = array();
+        if (!$is_err){
+            $video_model = Model_Orm_Video::find('all', array(
+                'where'=> array(array('video_name','LIKE', $data)),
+                'order_by' => array('video_post_date'=>"desc")));
+        }
+            //$video_model = DB::select()->FROM('video')->WHERE('video_name', 'like', $data)->execute();
 
+        
+            $blabla = View::forge('vlog/list', $video_model);
+            $blabla->set('video_model', $video_model);
+            $this->template->page_title = "List of Vlogs";
+            $this->template->page_content = $blabla;
+            $this->template->page_search = View::forge('vlog/search');
+        
+    }
+    
 }

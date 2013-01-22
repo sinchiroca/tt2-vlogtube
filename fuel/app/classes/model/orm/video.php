@@ -20,16 +20,19 @@ class Model_Orm_Video extends \Orm\Model
       'video_post_date',
       'video_report'
    );
-/*
+
    protected static $_belongs_to =
 	    array(
-        'passwordusers' => array(
-	    'key_from' => 'video_user_id',
+        //'passwordusers' => array(
+	    //'key_from' => 'video_user_id',
+	   // 'model_to' => 'Model_Users',
+	   // 'key_to' => 'id'),
+        'users' => array(
+            'key_from' => 'video_user_id',
 	    'model_to' => 'Model_Users',
-	    'key_to' => 'user_id')
+	    'key_to' => 'id')
    );
- * 
- */
+
  
   protected static $_has_many = array(
 			    'comments' => array(

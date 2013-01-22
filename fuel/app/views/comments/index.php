@@ -1,11 +1,7 @@
-<h2><?php echo $vlog->video_name ?></h2>
-<iframe width="420" height="315" align="center" src=<?php echo $vlog->video_url ?> frameborder="0" allowfullscreen></iframe>
-<p>
-    <strong>Description:</strong>
-    <?php
-    echo ($vlog->video_descr) ? htmlspecialchars_decode($vlog->video_descr) : "(no description)";
+<h3><?php 
+    echo Html::anchor("vlog/view/".$vlog->vidoe_id, $vlog->video_name);
     ?>
-</p>
+</h3>
 <p>
     <strong>Comments:</strong>
     <ul>
@@ -17,5 +13,4 @@
 	?>
             <li><?php echo Html::anchor("/comments/create/".$vlog->video_id, "Add a Comment", array("class" => "btn btn-primary"));?></li>
     </ul>
-</p>
-
+</p> 

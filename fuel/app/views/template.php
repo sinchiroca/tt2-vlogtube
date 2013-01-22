@@ -35,6 +35,11 @@ use Fuel\Core\Asset;
 </div>
     <div class="container" align="center">
         <?php if (isset($page_content)) {echo $page_content;} ?>
+        <?php if (isset($content)) {echo $content;} ?>
+    </div>
+    
+    <div class="span9" id="search">
+        <?php echo $page_search; ?>
     </div>
     
     <?php if (Session::get_flash('error')): ?>

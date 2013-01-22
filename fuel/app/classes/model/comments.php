@@ -8,7 +8,7 @@ class Model_Comments extends \Orm\Model
       'comment_id',
       'comment_descr' => array(
 	    'data_type' => 'varchar',
-	    'label' => 'Comment Description: '),
+	    'label' => 'Comment: '),
       'comment_user_id',
       'comment_video_id',
       'comment_status',
@@ -16,16 +16,24 @@ class Model_Comments extends \Orm\Model
    );
    protected static $_belongs_to =
 	    array(
-                /*'users' => array(
+                'users' => array(
                     'key_from' => 'comment_user_id',
                     'model_to' => 'Model_Users',
-                    'key_to' => 'user_id'),
-                 * 
-                 */
+                    'key_to' => 'id'),
+                
                 'video' => array(
                     'key_from' => 'comment_video_id',
                     'model_to' => 'Model_Video',
                     'key_to' => 'video_id')
              );
-   
+     public static function validate($factory) {
+	$val = Validation::forge($factory);
+	
+	//because we want to check if location is valid
+	//$val->add_callable("Model_Orm_Location");
+
+	$val->add_field('comment_descr', 'Comment; ', 'required|max_length[255]');
+	return $val;
+    }
+
 }
