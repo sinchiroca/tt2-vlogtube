@@ -74,7 +74,7 @@ class Controller_Comments extends Controller_Template {
 	    //we assign a random value to the form
 	    //$data["form_key"] = md5(mt_rand(1000, 10000));
 	} else {
-            $view = View::forge('comments/create/');
+            $view = View::forge('comments/create');
             $view->set('videos', $video);
             $this->template->title = "Adding Comment to `".$video->video_name."`.";    
             //return Response::redirect('comments/create/'.$video->video_id);

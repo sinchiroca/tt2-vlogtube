@@ -31,6 +31,7 @@ use Fuel\Core\Asset;
 </h2>
 </div>
     <div class="span2">
+ 
   <?php if (isset($page_sidebar)) {echo $page_sidebar;} ?>
 </div>
     <div class="container" align="center">

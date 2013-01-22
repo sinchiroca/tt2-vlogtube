@@ -1,4 +1,4 @@
-<h2>New Vlog</h2>
+<h2><?php echo __('NEW_VLOG_TITLE'); ?></h2>
 
 <script type="text/javascript">
     $(document).ready(
@@ -26,12 +26,13 @@
     });
 </script>
 
+<?php Lang::load("vlog"); ?>
 
 <?php echo Form::open('vlog/create'); ?>
 <fieldset>
 
     <div class="clearfix">
-	<?php echo Form::label('Name of the Vlog', 'video_name'); ?>
+	<?php echo Form::label(__('ADD_VLOG'), 'video_name'); ?>
 
 	<div class="input">
 	    <?php
@@ -41,7 +42,7 @@
 	</div>
     </div>
     <div class="clearfix">
-	<?php echo Form::label('YouTube Video URL', 'video_url'); ?>
+	<?php echo Form::label(__('ADD_VLOG_LINK'), 'video_url'); ?>
 
 	<div class="input">
 	    <?php
@@ -51,7 +52,7 @@
 	</div>
     </div>
     <div class="clearfix">
-	<?php echo Form::label('Description of the Vlog', 'description'); ?>
+	<?php echo Form::label(__('ADD_VLOG_DESCR'), 'description'); ?>
 
 	<div class="input">
 	    <?php
@@ -63,7 +64,7 @@
 </fieldset>	
 <div class="actions">
 
-    <?php echo Form::submit('submit', 'Save', array('class' => 'btn btn-primary')); ?>
+    <?php echo Form::submit('submit', __('ADD_VLOG_SUBMIT'), array('class' => 'btn btn-primary')); ?>
 
 </div>
 <?php echo Form::close() ?>

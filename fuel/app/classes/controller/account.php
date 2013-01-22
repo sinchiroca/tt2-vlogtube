@@ -1,13 +1,36 @@
 <?php
+use \Model_Users;
 
 class Controller_Account extends Controller_Template {
     
     public function before() {
         parent::before();
         
+        $this->template->page_search = View::forge('vlog/search');
         $auth = Auth::instance();
         $user_id = $auth->get_user_id();
+        if ($user_id[1] != 0) {
+        //the user has logged in, we can load a language
+            //$user = Model_Users::find($user_id);
+            //$this->template->hello = $user->username;
+        $lang_pref = $auth->get_profile_fields("language", null);
+        if ($lang_pref != null) {
+        Config::set("language", $lang_pref);
+            }
+        } 
+        Lang::load("account");
+        Lang::load("vlog");
     }
+    
+    public function action_setlang($lang=null){
+    //assumes there is an authenticated user
+        if ($lang!=null){
+        $auth = Auth::instance();
+        $auth->update_user(array("language"=>$lang));
+        Response::redirect("vlog/list");
+        }
+    }
+    
     public function action_create() {
         if (Input::method() == "POST") {
             $exist_user = DB::select("id")
@@ -18,17 +41,17 @@ class Controller_Account extends Controller_Template {
         $is_err = false;
         if (count($exist_user) > 0) {
             //sorry, the username is taken already :(
-            Session::set_flash("error", "The username is already taken");
+            Session::set_flash("error", __('ACTION_CREATE_USERTAKEN'));
             $is_err = true;
         }
 
         if (Input::post("password") != Input::post("password_rep")) {
-            Session::set_flash("error", "Passwords do not match!");
+            Session::set_flash("error", __('ACTION_CREATE_PASSNOTMATCH'));
             $is_err = true;
         }
         
         if ((((Input::post("password")) || (Input::post("password_rep"))) == NULL) || ((Input::post("usermail")) == NULL)) {
-            Session::set_flash("error", "Empty passwords and/or usernames are not allowed!");
+            Session::set_flash("error", __('ACTION_CREATE_PASSEMPTY'));
             $is_err = true;
         }
 
@@ -43,12 +66,12 @@ class Controller_Account extends Controller_Template {
                 array("verified" => true,
         "       verification_key" => $verification_key)
             );
-            Session::set_flash("success", "Registration successful!");
+            Session::set_flash("success", __('ACTION_CREATE_SUCCESS'));
             //nothing else to do here
             Response::redirect("/");
         }
     }
-    $this->template->page_title = "Register to VlogTube";
+    $this->template->page_title = __('ACTION_CREATE_TITLE');
     $this->template->page_content = View::forge("account/create");
     }
 
@@ -75,7 +98,7 @@ class Controller_Account extends Controller_Template {
         // repopulate the username field and give some error text back to the view
         //$data['username'] = Input::post('username');
                //$this->template->page_content = View::forge('account/simpleauth');
-                Session::set_flash("error", "User name or password incorrect.");
+                Session::set_flash("error", __('ACTION_SIMPLEAUTH_WRONG'));
         //$data['login_error'] = 'Wrong username/password combo. Try again';
             }
                 
